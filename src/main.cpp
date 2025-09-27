@@ -28,6 +28,14 @@ public:
 			elems++;
 			return;
 		}
+
+		if (num < root->data) {
+			Node* current = root.get();
+			while (current->left != nullptr) {
+				current = current->left.get();
+			}
+			current->left = std::make_unique<Node>(num);
+		}
 	}
 };
 
