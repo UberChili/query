@@ -1,7 +1,35 @@
 #include <iostream>
+#include <memory>
 #include <print>
-#include <cstdlib>
 #include <string>
+
+// This project needs an implementation of an ATS, not a binary tree
+// For now... We will define a simple binary tree just for learning purposes
+// Doing it in here just because I'm too lazy to create a new directory 
+// and start a new project and all that jazz
+struct Node {
+	int data;
+	std::unique_ptr<Node> left;
+	std::unique_ptr<Node> right;
+
+	Node(int d) : data(d), left(nullptr), right(nullptr) {};
+};
+
+struct Tree {
+	std::unique_ptr<Node> root;
+	int elems;
+
+	Tree() : root(nullptr), elems(0) {};
+
+public:
+	void insert(int num) {
+		if (root == nullptr) {
+			root = std::make_unique<Node>(num);
+			elems++;
+			return;
+		}
+	}
+};
 
 std::string prompt() {
 	std::string input;
