@@ -1,24 +1,19 @@
 #include <iostream>
 #include <print>
 #include <cstdlib>
+#include <string>
 
-void prompt() {
-	system("clear");
-
+std::string prompt() {
 	std::string input;
 	do {
-		std::print("promt> ");
-		std::cin >> input;
+		std::print("prompt> ");
+		std::getline(std::cin, input);
 		if (input.empty()) {
 			continue;
 		} else {
-			break;
+			std::print("\t{}\n", input);
+			return input;
 		}
-
-		// TODO
-		// We would do some kind of processing here
-		// Maybe we just call a function that _parses_
-		// parse(input);
 	} while (true);
 }
 
@@ -30,7 +25,13 @@ void parse(std::string query) {
 }
 
 int main(void) {
-	prompt();
+	// First clear of screen
+	system("clear");
+
+	while (true) {
+		std::string in_prompt = prompt();
+		// Process the string, parse to AST
+	};
 
 	return 0;
 }
