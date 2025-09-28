@@ -9,10 +9,11 @@
 // and start a new project and all that jazz
 struct Node {
 	int data;
+	std::unique_ptr<Node> parent;
 	std::unique_ptr<Node> left;
 	std::unique_ptr<Node> right;
 
-	Node(int d) : data(d), left(nullptr), right(nullptr) {};
+	Node(int d) : data(d), parent(nullptr),left(nullptr), right(nullptr) {};
 };
 
 struct Tree {
@@ -23,19 +24,50 @@ struct Tree {
 
 public:
 	void insert(int num) {
-		if (root == nullptr) {
-			root = std::make_unique<Node>(num);
-			elems++;
-			return;
+		Node node = Node(num);
+		Node* x = root.get();
+		Node* y = nullptr;
+
+		while (x != nullptr) {
+			y = x;
+			if (node.data < x->data) {
+				x = x->left.get();
+			} else {
+				x = x->right.get();
+			}
 		}
 
-		if (num < root->data) {
-			Node* current = root.get();
-			while (current->left != nullptr) {
-				current = current->left.get();
-			}
-			current->left = std::make_unique<Node>(num);
+		node.parent = y;
+
+		if (y == nullptr) {
+			root = node;
 		}
+		else if (node.data < y->data) {
+			y->left = node;
+		} else {
+			y->right = node;
+		}
+
+		// if (root == nullptr) {
+		// 	root = std::make_unique<Node>(num);
+		// 	elems++;
+		// 	return;
+		// }
+
+		// // value is less than current root
+		// if (num < root->data) {
+		// 	Node* current = root.get();
+		// 	while (current->left != nullptr) {
+		// 		if (num < current->data) {
+		// 			// go left, but only if we should go left
+		// 		} else {
+		// 			// go right, but only if we should go right
+		// 		}
+		// 	}
+		// 	current->left = std::make_unique<Node>(num);
+		// 	elems++;
+		// 	return;
+		// }
 	}
 };
 
