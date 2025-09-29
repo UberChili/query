@@ -1,4 +1,5 @@
 #include "bst.hpp"
+#include <fstream>
 #include <iostream>
 #include <print>
 #include <string>
@@ -25,17 +26,44 @@ void parse(std::string query) {
 	}
 }
 
+std::vector<std::string> load_file(std::string filename) {
+  std::string line;
+  std::vector<std::string> lines;
+
+  // Need to open the file first!
+  std::ifstream ifs{filename};
+  if (!ifs) {
+    std::println("Error: Could not open file {}.", filename);
+    return {};
+  }
+
+  while(std::getline(ifs, line)) {
+    lines.push_back(line);
+  }
+
+  return lines;
+}
+
 int main(void) {
 	// First clear of screen
 	system("clear");
 
-  // Testing our tree
-  std::vector<int> nums = {70, 5, 2, 4, 8, 7, 3, 3};
-  Tree tree =  Tree();
-  for (const auto& num : nums) {
-    tree.insert(num);
+  std::vector<std::string> file = load_file("iris.csv");
+  if (file.empty()) {
+    return 1;
   }
-  tree.print_tree();
+
+  for (const auto& line : file) {
+    println("{}", line);
+  }
+
+  // // Testing our tree
+  // std::vector<int> nums = {70, 5, 2, 4, 8, 7, 3, 3};
+  // Tree tree =  Tree();
+  // for (const auto& num : nums) {
+  //   tree.insert(num);
+  // }
+  // tree.print_tree();
 
 	// while (true) {
 	// 	std::string in_prompt = prompt();
