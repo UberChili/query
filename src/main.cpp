@@ -1,8 +1,8 @@
-#include <cstdio>
 #include <iostream>
 #include <memory>
 #include <print>
 #include <string>
+#include <vector>
 
 // This project needs an implementation of an ATS, not a binary tree
 // For now... We will define a simple binary tree just for learning purposes
@@ -50,20 +50,23 @@ public:
 		}
 	}
 
-	void print_tree(Node* node) {
-		Node* x = node;
-
-		if (x == nullptr) {
-			std::println("Tree is empty!");
-			return;
-		}
-
-		print_tree(x->left.get());
-		std::print("{} ", x->data);
-		print_tree(x->right.get());
-
+	void print_tree() {
+		Node* x = root.get();
+    print_tree_helper(x);
 		std::print("\n");
+    std::println("{} nodes found", elems);
 	}
+
+private:
+  void print_tree_helper(Node *node) {
+    if (node == nullptr) {
+      return;
+    }
+
+    print_tree_helper(node->left.get());
+    std::print("{} ", node->data);
+    print_tree_helper(node->right.get());
+  }
 };
 
 std::string prompt() {
@@ -91,10 +94,19 @@ int main(void) {
 	// First clear of screen
 	system("clear");
 
-	while (true) {
-		std::string in_prompt = prompt();
-		// Process the string, parse to AST
-	};
+  std::vector<int> nums = {70, 5, 2, 4, 8, 7, 3, 3};
+  Tree tree = Tree();
+
+  for (const auto& num : nums) {
+    tree.insert(num);
+  }
+
+  tree.print_tree();
+
+	// while (true) {
+	// 	std::string in_prompt = prompt();
+	// 	// Process the string, parse to AST
+	// };
 
 	return 0;
 }
