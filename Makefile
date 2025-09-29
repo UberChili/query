@@ -1,9 +1,10 @@
 CC = g++
 SRC_DIR = src
 BIN_DIR = build
+INCLUDE_DIR = include
 SRC = $(wildcard $(SRC_DIR)/*.cpp)
 OUT = $(BIN_DIR)/query
-CFLAGS = -Wall -Werror -Wextra -std=c++23
+CFLAGS = -Wall -Werror -Wextra -std=c++23 -I$(INCLUDE_DIR)
 
 # Platform-specific settings
 UNAME_S := $(shell uname -s)
