@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <iostream>
 #include <memory>
 #include <print>
@@ -49,16 +50,19 @@ public:
 		}
 	}
 
-	void print_tree() {
-		Node* x = root.get();
-		Node* y = nullptr;
+	void print_tree(Node* node) {
+		Node* x = node;
 
 		if (x == nullptr) {
 			std::println("Tree is empty!");
 			return;
 		}
 
-		while ()
+		print_tree(x->left.get());
+		std::print("{} ", x->data);
+		print_tree(x->right.get());
+
+		std::print("\n");
 	}
 };
 
