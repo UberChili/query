@@ -3,7 +3,6 @@
 #include <iostream>
 #include <print>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 #include <csv.hpp>
@@ -30,38 +29,40 @@ void parse(std::string query) {
 }
 
 std::vector<std::string> load_file(std::string filename) {
-  std::string line;
-  std::vector<std::string> lines;
+    std::string line;
+    std::vector<std::string> lines;
 
-  // Need to open the file first!
-  std::ifstream ifs{filename};
-  if (!ifs) {
-    std::println("Error: Could not open file {}.", filename);
-    return {};
-}
+    // Need to open the file first!
+    std::ifstream ifs{filename};
+    if (!ifs) {
+        std::println("Error: Could not open file {}.", filename);
+        return {};
+    }
 
-while(std::getline(ifs, line)) {
-    lines.push_back(line);
-}
+    while (std::getline(ifs, line)) {
+        lines.push_back(line);
+    }
 
-return lines;
+    return lines;
 }
 
 struct IrisRow {
     std::string sepal_length, sepal_width, petal_length, petal_width, species;
 };
 
-std::vector<std::string> filter_by_species(const std::vector<IrisRow>& rows, const std::string& species) {
-    std::vector<std::string> results;
+// std::vector<IrisRow> filter_by_species(const std::vector<IrisRow> &rows,
+//                                        const std::string &species) {
+//     std::vector<IrisRow> results;
 
-    for (const auto& row : rows) {
-        if (row.species == species) {
-            std::string line = row.petal_length + "," + row.petal_width + "," + row.sepal_length + "," + row.sepal_width + "," + row.species;
-            results.push_back(line);
-        }
-    }
-    return results;
-}
+//     for (const auto &row : rows) {
+//         if (row.species == species) {
+//             results.push_back(row);
+//         }
+//     }
+//     return results;
+// }
+//
+std::vector<IrisRow> filter_by()
 
 int main(void) {
     // First clear of screen
@@ -76,29 +77,30 @@ int main(void) {
     //     println("{}", line);
     // }
 
-    io::CSVReader<5> in("iris.csv"); 
-    in.read_header(io::ignore_no_column, "sepal_length", "sepal_width", "petal_length", "petal_width", "species");
+    io::CSVReader<5> in("iris.csv");
+    in.read_header(io::ignore_no_column, "sepal_length", "sepal_width",
+                   "petal_length", "petal_width", "species");
     std::string sepal_length, sepal_width, petal_length, petal_width, species;
     std::vector<IrisRow> rows_v;
-    while (in.read_row(sepal_length, sepal_width, petal_length, petal_width, species)) {
-        rows_v.push_back(IrisRow{sepal_length, sepal_width, petal_length, petal_width, species});
+    while (in.read_row(sepal_length, sepal_width, petal_length, petal_width,
+                       species)) {
+        rows_v.push_back(IrisRow{sepal_length, sepal_width, petal_length,
+                                 petal_width, species});
     }
 
-    // Let's start with something simple, printing out all the rows where species == "setosa"
+    // Let's start with something simple, printing out all the rows where
+    // species == "setosa"
     auto results = filter_by_species(rows_v, "setosa");
 
-    for (const auto& row : results) {
-        std::println("{}", row);
-    }
     std::println("Found {} rows.", results.size());
 
-  // // Testing our tree
-  // std::vector<int> nums = {70, 5, 2, 4, 8, 7, 3, 3};
-  // Tree tree =  Tree();
-  // for (const auto& num : nums) {
-  //   tree.insert(num);
-  // }
-  // tree.print_tree();
+    // // Testing our tree
+    // std::vector<int> nums = {70, 5, 2, 4, 8, 7, 3, 3};
+    // Tree tree =  Tree();
+    // for (const auto& num : nums) {
+    //   tree.insert(num);
+    // }
+    // tree.print_tree();
 
     // while (true) {
     //  std::string in_prompt = prompt();
@@ -106,5 +108,4 @@ int main(void) {
     // };
 
     return 0;
-
 }
