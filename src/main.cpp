@@ -90,6 +90,7 @@ int main(void) {
     for (const auto& row : results) {
         std::println("{}", row);
     }
+    std::println("Found {} rows.", results.size());
 
   // // Testing our tree
   // std::vector<int> nums = {70, 5, 2, 4, 8, 7, 3, 3};
