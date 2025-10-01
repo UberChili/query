@@ -61,8 +61,45 @@ struct IrisRow {
 //     }
 //     return results;
 // }
-//
-std::vector<IrisRow> filter_by()
+
+std::string get_column_value(const IrisRow& row, const std::string& column) {
+   if (column == "sepal_length") {
+    return row.sepal_length;
+   }
+   if (column == "sepal_width") {
+    return row.petal_width;
+   } 
+   if (column == "petal_length") {
+    return row.petal_length;
+   } 
+   if (column == "petal_width") {
+    return row.sepal_width;
+   } 
+   if (column == "species") {
+    return row.species;
+   } 
+   return "";
+}
+
+std::vector<IrisRow> filter(const std::vector<IrisRow>& rows,
+    const std::string& column,
+    const std::string& operation,
+    const std::string& value)
+{
+    std::vector<IrisRow> results;
+
+    if (operation == "==") {
+        for (const auto &row : rows) {
+            std::string col = get_column_value(row, column);
+        }
+    }
+    if (operation == ">") {
+    }
+    if (operation == "<") {
+    }
+
+    return results;
+}
 
 int main(void) {
     // First clear of screen
