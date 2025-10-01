@@ -2,7 +2,9 @@
 #include <fstream>
 #include <iostream>
 #include <print>
+#include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #include <csv.hpp>
@@ -62,23 +64,15 @@ struct IrisRow {
 //     return results;
 // }
 
+
 std::string get_column_value(const IrisRow& row, const std::string& column) {
-   if (column == "sepal_length") {
-    return row.sepal_length;
-   }
-   if (column == "sepal_width") {
-    return row.petal_width;
-   } 
-   if (column == "petal_length") {
-    return row.petal_length;
-   } 
-   if (column == "petal_width") {
-    return row.sepal_width;
-   } 
-   if (column == "species") {
-    return row.species;
-   } 
-   return "";
+    if (column == "sepal_length") return row.sepal_length;
+    if (column == "sepal_width") return row.sepal_width;
+    if (column == "petal_length") return row.petal_length;
+    if (column == "petal_width") return row.petal_width;
+    if (column == "species") return row.species;
+
+    return "";
 }
 
 std::vector<IrisRow> filter(const std::vector<IrisRow>& rows,
@@ -88,14 +82,35 @@ std::vector<IrisRow> filter(const std::vector<IrisRow>& rows,
 {
     std::vector<IrisRow> results;
 
-    if (operation == "==") {
-        for (const auto &row : rows) {
-            std::string col = get_column_value(row, column);
+    for (const auto &row : rows) {
+        std::string column_value = get_column_value(row, column);
+        bool matches = false;
+
+        if (operation == "==") {
+            if (column_value == value) 
+                results.push_back(row);
         }
-    }
-    if (operation == ">") {
-    }
-    if (operation == "<") {
+        try {
+            if (operation == ">") {
+                float value_f = std::stof(value);
+                float column_f = std::stof(column_value);
+
+                if (column_f > value_f) {
+                    results.push_back(row);
+                }
+            }
+            if (operation == "<") {
+                float value_f = std::stof(value);
+                float column_f = std::stof(column_value);
+
+                if (column_f < value_f) {
+                    results.push_back(row);
+                }
+            }
+        } catch (std::invalid_argument) {
+            std::println("Can't convert a value!");
+            return {};
+        }
     }
 
     return results;
@@ -127,7 +142,12 @@ int main(void) {
 
     // Let's start with something simple, printing out all the rows where
     // species == "setosa"
-    auto results = filter_by_species(rows_v, "setosa");
+    // auto results = filter_by_species(rows_v, "setosa");
+    auto results = filter(rows_v, "sepal_lenght", ">", "5.0");
+
+    for (const auto &row : results) {
+        std::println("{},{},{},{},{}", row.sepal_length, row.sepal_width, row.petal_length, row.petal_width, row.species);
+    }
 
     std::println("Found {} rows.", results.size());
 
