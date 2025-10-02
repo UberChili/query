@@ -2,12 +2,11 @@
 #include <fstream>
 #include <iostream>
 #include <print>
-#include <stdexcept>
 #include <string>
-#include <type_traits>
 #include <vector>
 
 #include <csv.hpp>
+#include <filter.hpp>
 
 std::string prompt() {
     std::string input;
@@ -48,71 +47,10 @@ std::vector<std::string> load_file(std::string filename) {
     return lines;
 }
 
-struct IrisRow {
-    std::string sepal_length, sepal_width, petal_length, petal_width, species;
-};
-
-
-std::string get_column_value(const IrisRow& row, const std::string& column) {
-    if (column == "sepal_length") return row.sepal_length;
-    if (column == "sepal_width") return row.sepal_width;
-    if (column == "petal_length") return row.petal_length;
-    if (column == "petal_width") return row.petal_width;
-    if (column == "species") return row.species;
-
-    return "";
-}
-
-std::vector<IrisRow> filter(const std::vector<IrisRow>& rows,
-    const std::string& column,
-    const std::string& operation,
-    const std::string& value)
-{
-    std::vector<IrisRow> results;
-
-    for (const auto &row : rows) {
-        std::string column_value = get_column_value(row, column);
-        bool matches = false;
-
-        if (operation == "==") {
-            matches = (column_value == value);
-        }
-        else if (operation == ">" || operation == "<") {
-            try {
-                float value_f = std::stof(value);
-                float column_f = std::stof(column_value);
-
-                if (operation == ">") {
-                    matches = (column_f > value_f);
-                } else {
-                    matches = (column_f < value_f);
-                }
-            } catch (std::invalid_argument&) {
-                // skip this row if conversion fails
-                continue;
-            }
-
-        }
-
-        if (matches)
-            results.push_back(row);
-    }
-
-    return results;
-}
 
 int main(void) {
     // First clear of screen
     system("clear");
-
-    // std::vector<std::string> file = load_file("iris.csv");
-    // if (file.empty()) {
-    //     return 1;
-    // }
-
-    // for (const auto& line : file) {
-    //     println("{}", line);
-    // }
 
     io::CSVReader<5> in("iris.csv");
     in.read_header(io::ignore_no_column, "sepal_length", "sepal_width",
