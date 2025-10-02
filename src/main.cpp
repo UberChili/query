@@ -52,18 +52,6 @@ struct IrisRow {
     std::string sepal_length, sepal_width, petal_length, petal_width, species;
 };
 
-// std::vector<IrisRow> filter_by_species(const std::vector<IrisRow> &rows,
-//                                        const std::string &species) {
-//     std::vector<IrisRow> results;
-
-//     for (const auto &row : rows) {
-//         if (row.species == species) {
-//             results.push_back(row);
-//         }
-//     }
-//     return results;
-// }
-
 
 std::string get_column_value(const IrisRow& row, const std::string& column) {
     if (column == "sepal_length") return row.sepal_length;
@@ -87,30 +75,27 @@ std::vector<IrisRow> filter(const std::vector<IrisRow>& rows,
         bool matches = false;
 
         if (operation == "==") {
-            if (column_value == value) 
-                results.push_back(row);
+            matches = (column_value == value);
         }
-        try {
-            if (operation == ">") {
+        else if (operation == ">" || operation == "<") {
+            try {
                 float value_f = std::stof(value);
                 float column_f = std::stof(column_value);
 
-                if (column_f > value_f) {
-                    results.push_back(row);
+                if (operation == ">") {
+                    matches = (column_f > value_f);
+                } else {
+                    matches = (column_f < value_f);
                 }
+            } catch (std::invalid_argument&) {
+                // skip this row if conversion fails
+                continue;
             }
-            if (operation == "<") {
-                float value_f = std::stof(value);
-                float column_f = std::stof(column_value);
 
-                if (column_f < value_f) {
-                    results.push_back(row);
-                }
-            }
-        } catch (std::invalid_argument) {
-            std::println("Can't convert a value!");
-            return {};
         }
+
+        if (matches)
+            results.push_back(row);
     }
 
     return results;
@@ -141,14 +126,11 @@ int main(void) {
     }
 
     // Let's start with something simple, printing out all the rows where
-    // species == "setosa"
-    // auto results = filter_by_species(rows_v, "setosa");
-    auto results = filter(rows_v, "sepal_lenght", ">", "5.0");
+    auto results = filter(rows_v, "petal_length", ">", "4.0");
 
     for (const auto &row : results) {
         std::println("{},{},{},{},{}", row.sepal_length, row.sepal_width, row.petal_length, row.petal_width, row.species);
     }
-
     std::println("Found {} rows.", results.size());
 
     // // Testing our tree
