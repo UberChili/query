@@ -63,12 +63,14 @@ int main(void) {
                                  petal_width, species});
     }
 
-    // Let's start with something simple, printing out all the rows where
-    auto results = filter(rows_v, "petal_length", ">", "4.0");
+    // Trying to get to specified columns
+    std::vector<std::string> select = {"species", "petal_length"};
+    auto results = filter(rows_v, select, ">", "4.0");
 
-    for (const auto &row : results) {
-        std::println("{},{},{},{},{}", row.sepal_length, row.sepal_width, row.petal_length, row.petal_width, row.species);
-    }
+    // This was for printing values when result of filter was a vec of IrisRow
+    // for (const auto &row : results) {
+    //     std::println("{},{},{},{},{}", row.sepal_length, row.sepal_width, row.petal_length, row.petal_width, row.species);
+    // }
     std::println("Found {} rows.", results.size());
 
     // // Testing our tree
