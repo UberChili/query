@@ -79,6 +79,7 @@ int main(void) {
     std::println("");
     for (const auto &row : results) {
         std::println("species: {}, petal_length: {}", row.at("species"), row.at("petal_length"));
+        std::println("Number of columns of row: {}", row.size());
     }
     std::println("Found {} rows.", results.size());
 
