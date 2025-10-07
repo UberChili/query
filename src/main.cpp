@@ -47,7 +47,6 @@ std::vector<std::string> load_file(std::string filename) {
     return lines;
 }
 
-
 int main(void) {
     // First clear of screen
     system("clear");
@@ -64,13 +63,23 @@ int main(void) {
     }
 
     // Trying to get to specified columns
-    std::vector<std::string> select = {"species", "petal_length"};
-    auto results = filter(rows_v, select, ">", "4.0");
+    std::vector<std::string> select_v = {"species", "petal_length"};
+    auto results = filter(rows_v, select_v, "petal_length", ">", "5.0");
 
     // This was for printing values when result of filter was a vec of IrisRow
     // for (const auto &row : results) {
-    //     std::println("{},{},{},{},{}", row.sepal_length, row.sepal_width, row.petal_length, row.petal_width, row.species);
+    //     std::println("{},{},{},{},{}", row.sepal_length, row.sepal_width,
+    //     row.petal_length, row.petal_width, row.species);
     // }
+    
+    // Gotta test the new version: asking the function for specific columns ("SELECT")
+    for (const auto &col : select_v) {
+        std::print("{} ", col);
+    }
+    std::println("");
+    for (const auto &row : results) {
+        std::println("species: {}, petal_length: {}", row.at("species"), row.at("petal_length"));
+    }
     std::println("Found {} rows.", results.size());
 
     // // Testing our tree
