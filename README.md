@@ -27,8 +27,6 @@ Binary outputs to **/build/query**
 
 This would output:
 
-![](example.png)
-
 ## Limitations
 - Single CSV schema (hardcoded for iris.csv structure)
 - No JOIN, GROUP BY, or aggregate functions
