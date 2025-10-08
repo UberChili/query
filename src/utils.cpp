@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <format>
 #include <map>
 #include <print>
 #include <string>
@@ -11,31 +11,58 @@ void print_table(std::vector<std::map<std::string, std::string>> &table) {
         std::println("Empty table");
     }
     std::vector<std::string> column_names;
-    std::vector<std::string> column_values;
 
     // Getting column names and column values
     for (const auto &[k, v] : table[0]) {
         column_names.push_back(k);
-        column_values.push_back(v);
     }
 
-    auto largest = std::max_element(column_values.begin(), column_values.end());
-    size_t width = std::strlen(largest->data()) + 1;
+    // Finding largest value in column to use as width
+    std::map<std::string, size_t> column_widths;
+    for (const auto &col : column_names) {
+        size_t max_width = col.size();
 
-    // Step 1: Just print column names, no formatting yet
-    for (const auto &col_name : column_names) {
-        size_t fixed_width = std::strlen(col_name) - width;
-        std::string formatted = std::format(" {}", col_name);
-        for (size_t i = 0; i < width; i++)
+        for (const auto &row : table) {
+            size_t curr_width = row.at(col).size();
+            if (curr_width > max_width)
+                max_width = curr_width;
+        }
+
+        column_widths[col] = max_width;
+    }
+
+    // Print column names
+    for (const auto &col : column_names) {
+        size_t this_col_width = column_widths[col];
+        std::string formatted = std::format(" {} ", col);
+
+        for (size_t i = 0; i < (this_col_width - col.size()); i++) {
             formatted += " ";
+        }
         std::print("{}|", formatted);
     }
     std::println("");
 
-    // Step 2: Print all rows
+    // Print separator
+    for (const auto &col : column_names) {
+        size_t this_col_width = column_widths[col];
+        for (size_t i = 0; i < this_col_width + 2; i++) {
+            std::print("-");
+        }
+        std::print("+");
+    }
+    std::println("");
+
+    // Print row values
     for (const auto &row : table) {
-        for (const auto &col_name : column_names) {
-            std::print("{} | ", row.at(col_name));
+        for (const auto &col : column_names) {
+            size_t this_col_width = column_widths[col];
+            std::string formatted = std::format(" {} ", row.at(col));
+
+            for (size_t i = 0; i < (this_col_width - row.at(col).size()); i++) {
+                formatted += " ";
+            }
+            std::print("{}|", formatted);
         }
         std::println("");
     }

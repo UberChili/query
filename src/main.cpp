@@ -64,8 +64,9 @@ int main(void) {
     }
 
     // Trying to get to specified columns
-    std::vector<std::string> select_v = {"species", "petal_length"};
-    auto results = filter(rows_v, select_v, "petal_length", ">", "4.9");
+    std::vector<std::string> select_v = {"species", "sepal_width",
+                                         "petal_length"};
+    auto results = filter(rows_v, select_v, "petal_length", ">", "5.9");
 
     std::println("Found {} rows.", results.size());
     print_table(results);
