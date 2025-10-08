@@ -7,6 +7,7 @@
 
 #include <csv.hpp>
 #include <filter.hpp>
+#include <utils.hpp>
 
 std::string prompt() {
     std::string input;
@@ -73,15 +74,8 @@ int main(void) {
     // }
     
     // Gotta test the new version: asking the function for specific columns ("SELECT")
-    for (const auto &col : select_v) {
-        std::print("{} ", col);
-    }
-    std::println("");
-    for (const auto &row : results) {
-        std::println("species: {}, petal_length: {}", row.at("species"), row.at("petal_length"));
-        std::println("Number of columns of row: {}", row.size());
-    }
     std::println("Found {} rows.", results.size());
+    print_table(results);
 
     // // Testing our tree
     // std::vector<int> nums = {70, 5, 2, 4, 8, 7, 3, 3};
