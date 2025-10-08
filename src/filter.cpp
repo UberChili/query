@@ -20,7 +20,6 @@ std::string get_column_value(const IrisRow &row, const std::string &column) {
     return "";
 }
 
-// std::vector<IrisRow> filter(const std::vector<IrisRow>& rows,
 std::vector<std::map<std::string, std::string>>
 filter(const std::vector<IrisRow> &rows,
        const std::vector<std::string> &columns,
@@ -37,7 +36,6 @@ filter(const std::vector<IrisRow> &rows,
         
         if (operation == "==") 
             matches = (test_value == value);
-        
         else if (operation == ">" || operation == "<") {
             try {
                 float value_f = std::stof(value);

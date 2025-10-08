@@ -1,10 +1,34 @@
+#include <algorithm>
 #include <format>
 #include <map>
 #include <print>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "utils.hpp"
+
+void sort_table(std::vector<std::map<std::string, std::string>> &table, std::string &column) {
+    if (table.empty()) {
+        std::println("Empty table. Nothing to do.");
+        return;
+    }
+    if (column.empty()) {
+        return;
+    }
+
+    std::sort(table.begin(), table.end(), [&column](const auto& a, const auto& b) {
+        try {
+            float a_f = std::stof(a.at(column));
+            float b_f = std::stof(b.at(column));
+
+            return a_f < b_f;
+        } catch (std::invalid_argument&) {
+            return a.at(column) < b.at(column);
+        }
+    });
+}
+
 
 void print_table(std::vector<std::map<std::string, std::string>> &table) {
     if (table.empty()) {

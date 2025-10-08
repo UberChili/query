@@ -1,6 +1,4 @@
 // #include "bst.hpp"
-#include <fstream>
-#include <iostream>
 #include <print>
 #include <string>
 #include <vector>
@@ -9,45 +7,6 @@
 #include <csv.hpp>
 #include <filter.hpp>
 #include <utils.hpp>
-
-std::string prompt() {
-    std::string input;
-    do {
-        std::print("prompt> ");
-        std::getline(std::cin, input);
-        if (input.empty()) {
-            continue;
-        } else {
-            std::print("\t{}\n", input);
-            return input;
-        }
-    } while (true);
-}
-
-void parse(std::string query) {
-    if (query.empty()) {
-        std::println("Empty query");
-        return;
-    }
-}
-
-std::vector<std::string> load_file(std::string filename) {
-    std::string line;
-    std::vector<std::string> lines;
-
-    // Need to open the file first!
-    std::ifstream ifs{filename};
-    if (!ifs) {
-        std::println("Error: Could not open file {}.", filename);
-        return {};
-    }
-
-    while (std::getline(ifs, line)) {
-        lines.push_back(line);
-    }
-
-    return lines;
-}
 
 int main(int argc, char **argv) {
     // Getting command line arguments
@@ -67,10 +26,13 @@ int main(int argc, char **argv) {
     std::string value = "";
     app.add_option("-v, --value ", value, "Value to filter with.");
 
+    std::string colum_to_sort_by = "";
+    app.add_option("--sort", colum_to_sort_by, "Column to sort by.");
+
     CLI11_PARSE(app, argc, argv);
 
     // First clear of screen
-    system("clear");
+    // system("clear");
 
     io::CSVReader<5> in("iris.csv");
     in.read_header(io::ignore_no_column, "sepal_length", "sepal_width",
@@ -85,10 +47,11 @@ int main(int argc, char **argv) {
 
     // Filter specified columns
     auto results = filter(rows_v, select_columns, col_search, operation, value);
+    sort_table(results, colum_to_sort_by);
 
     std::println("");
     print_table(results);
-    std::println("Found {} rows.", results.size());
+
 
     return 0;
 }

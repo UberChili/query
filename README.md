@@ -1,18 +1,40 @@
 # Query
-Trying to implement a **local query engine** as a learning exercise
+A lightweight SQL-like query engine for CSV files, built in C++ as a learning project.
 
-# Requirements included as headers
-- CSV Parser library by Ben Strasser.
+## Features
+- Filter rows with comparison operators (==, >, <)
+- Select specific columns
+- Sort results by any column (numeric or string)
+- Pretty-printed table output
+
+## Building
+Requires a C++23 compiler (GCC 13+ or Clang 16+).
+Includes a Makefile. You can just do make clean && make.
+```bash
+make clean && make
+```
+Binary outputs to **./build/query**
+
+## Usage
+```bash 
+./build/query --select col1 col2 col3 --where column --operation ">" -v value --sort column
+```
+
+### Example:
+```bash 
+./build/query --select species petal_width petal_length --where petal_length --operation ">" -v 6.0 --sort species
+```
+
+This would output:
+
+![](example.png)
+
+## Limitations
+- Single CSV schema (hardcoded for iris.csv structure)
+- No JOIN, GROUP BY, or aggregate functions
+- Single condition filtering only (no AND/OR)
+
+## Dependencies
+Included as vendored headers (no installation needed):
+- CSV Parser by Ben Strasser
 - CLI11
-
-# What currently works
-- Reading a CSV file into memory
-- Parsing each row splitting its values
-- ~~Querying or filtering rows by a search term, currently only by species~~
-- Querying or filtering rows by a **selection** of columns and a condition 
-- Pretty printing tables
-- Basic user input via command line arguments. User can select the columns they want, the value to search with and the colum to filter with, with an SQL-like syntax, but as command line arguments:
-
-
-# Working on
-- Maybe trying to improve or re-implement how we work with the command line arguments
