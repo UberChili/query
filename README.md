@@ -23,7 +23,7 @@ Operation can be <, >, or ==.
 
 ### Example:
 ```bash 
-./build/query --select species petal_width petal_length --where petal_length --operation ">" -v 6.0 --sort species
+./build/query --select species petal_width petal_length --where petal_length --operation ">" -v 6.0 --sort petal_width 
 ```
 
 This would output:
