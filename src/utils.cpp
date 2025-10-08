@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstring>
 #include <format>
 #include <map>
 #include <print>
@@ -14,8 +15,9 @@ void print_table(std::vector<std::map<std::string, std::string>>& table) {
     }
     // Getting column width
     // This is wrong, or incomplete
-    auto col_width = std::max_element(column_names.begin(), column_names.end());
+    size_t col_width = std::strlen(std::max_element(column_names.begin(), column_names.end())->data());
     
+
     // print header row
     for (auto it = column_names.begin(); it == column_names.end(); it++) {
         // print last column name
@@ -26,7 +28,7 @@ void print_table(std::vector<std::map<std::string, std::string>>& table) {
 
         // print normal column names
         std::string col = std::format(" {}", it->data());
-        for (int i = 0; i < col_width; i++) {
+        for (size_t i = 0; i < col_width; i++) {
 
         }
     }
