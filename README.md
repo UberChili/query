@@ -9,11 +9,11 @@ A lightweight SQL-like query engine for CSV files, built in C++ as a learning pr
 
 ## Building
 Requires a C++23 compiler (GCC 13+ or Clang 16+).
-Includes a Makefile. You can just do make clean && make.
+Includes a Makefile. You can just do make.
 ```bash
 make clean && make
 ```
-Binary outputs to **./build/query**
+Binary outputs to **/build/query**
 
 ## Usage
 ```bash 
