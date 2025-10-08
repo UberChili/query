@@ -65,30 +65,10 @@ int main(void) {
 
     // Trying to get to specified columns
     std::vector<std::string> select_v = {"species", "petal_length"};
-    auto results = filter(rows_v, select_v, "petal_length", ">", "5.0");
+    auto results = filter(rows_v, select_v, "petal_length", ">", "4.9");
 
-    // This was for printing values when result of filter was a vec of IrisRow
-    // for (const auto &row : results) {
-    //     std::println("{},{},{},{},{}", row.sepal_length, row.sepal_width,
-    //     row.petal_length, row.petal_width, row.species);
-    // }
-    
-    // Gotta test the new version: asking the function for specific columns ("SELECT")
     std::println("Found {} rows.", results.size());
     print_table(results);
-
-    // // Testing our tree
-    // std::vector<int> nums = {70, 5, 2, 4, 8, 7, 3, 3};
-    // Tree tree =  Tree();
-    // for (const auto& num : nums) {
-    //   tree.insert(num);
-    // }
-    // tree.print_tree();
-
-    // while (true) {
-    //  std::string in_prompt = prompt();
-    //  // Process the string, parse to AST
-    // };
 
     return 0;
 }
