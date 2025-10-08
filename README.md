@@ -19,6 +19,7 @@ Binary outputs to **/build/query**
 ```bash 
 ./build/query --select col1 col2 col3 --where column --operation ">" -v value --sort column
 ```
+Operation can be <, >, or ==.
 
 ### Example:
 ```bash 
