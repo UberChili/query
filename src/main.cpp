@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include <CLI11.hpp>
 #include <csv.hpp>
 #include <filter.hpp>
 #include <utils.hpp>
@@ -48,7 +49,26 @@ std::vector<std::string> load_file(std::string filename) {
     return lines;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
+    // Getting command line arguments
+    CLI::App app{"App description"};
+    argv = app.ensure_utf8(argv);
+
+    std::vector<std::string> select_columns;
+    app.add_option("-s, --select", select_columns,
+                   "Selection. Can be multiple columns.");
+
+    std::string col_search = "";
+    app.add_option("-w, --where", col_search, "Column name to search with.");
+
+    std::string operation = "==";
+    app.add_option("-o, --operation", operation, "Operation to search with.");
+
+    std::string value = "";
+    app.add_option("-v, --value ", value, "Value to filter with.");
+
+    CLI11_PARSE(app, argc, argv);
+
     // First clear of screen
     system("clear");
 
@@ -63,13 +83,12 @@ int main(void) {
                                  petal_width, species});
     }
 
-    // Trying to get to specified columns
-    std::vector<std::string> select_v = {"species", "sepal_width",
-                                         "petal_length"};
-    auto results = filter(rows_v, select_v, "petal_length", ">", "5.9");
+    // Filter specified columns
+    auto results = filter(rows_v, select_columns, col_search, operation, value);
 
-    std::println("Found {} rows.", results.size());
+    std::println("");
     print_table(results);
+    std::println("Found {} rows.", results.size());
 
     return 0;
 }
